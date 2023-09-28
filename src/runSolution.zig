@@ -17,20 +17,14 @@ pub fn runSolution(child_allocator: std.mem.Allocator, number: usize, input_type
 
     const input = try getInput(allocator, number, input_type);
 
-    var result: []const u8 = undefined;
+    const problems_total = @typeInfo(problems).Struct.decls.len;
+    var problem_functions = [_]*const fn (allocator: std.mem.Allocator, input: []const u8) anyerror![]const u8{undefined} ** problems_total;
 
-    // NOTE: such galaxy brain solution, such wow
-    // how to even approach this problem seriosuly?
-    // is this a case for shared libraries?
-    // this always loops through all modules...
-    // I can't find out how to make this indexable
-    // at runtime with elegant code.
-    inline for (@typeInfo(problems).Struct.decls) |decl| {
-        if (number == try std.fmt.parseInt(usize, decl.name[8..11], 10)) {
-            const module = @field(problems, decl.name);
-            result = try module.solution(child_allocator, input);
-        }
+    inline for (@typeInfo(problems).Struct.decls, 0..) |decl, index| {
+        problem_functions[index] = @field(problems, decl.name).solution;
     }
+
+    const result = try problem_functions[number - 1](child_allocator, input);
 
     return result;
 }
@@ -54,16 +48,3 @@ fn getInput(allocator: std.mem.Allocator, number: usize, input_type: InputType) 
 
     return input;
 }
-
-// NOTE: this cannot be indexed into at runtime
-// fn getModules() []type {
-//     const decls = @typeInfo(problems).Struct.decls;
-
-//     var modules: [decls.len]type = undefined;
-
-//     inline for (0..decls.len) |index| {
-//         modules[index] = @field(problems, decls[index].name);
-//     }
-
-//     return &modules;
-// }
