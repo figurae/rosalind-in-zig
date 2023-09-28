@@ -21,7 +21,7 @@ pub fn buildProblems(cwd: *const std.fs.Dir, child_allocator: std.mem.Allocator,
         const padded_problem_idx = try string.padLeft(allocator, problem_idx_string, 3, '0');
         const problem_var_name = try std.fmt.allocPrint(allocator, "{s}{s}", .{ globals.problem_var_prefix, padded_problem_idx });
 
-        const solution_path = try std.fs.path.join(allocator, &[_][]const u8{ globals.problems_dir_name, problem_name, globals.solution_file_name });
+        const solution_path = try std.mem.join(allocator, "/", &[_][]const u8{ globals.problems_dir_name, problem_name, globals.solution_file_name });
         const import_call = try std.fmt.allocPrint(allocator, import_placeholder, .{solution_path});
 
         const solution_line = try std.fmt.allocPrint(allocator, "{s} {s} = {s};\n", .{ keywords, problem_var_name, import_call });
