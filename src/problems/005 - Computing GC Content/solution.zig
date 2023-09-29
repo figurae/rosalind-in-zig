@@ -12,7 +12,8 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
     const allocator = arena.allocator();
 
     const doctored_input = try std.fmt.allocPrint(allocator, "{s}\n>", .{input});
-    var tokenizer = std.mem.tokenize(u8, doctored_input, "\n");
+    // TODO: make this OS-agnostic
+    var tokenizer = std.mem.tokenize(u8, doctored_input, "\r\n");
 
     var all_strings = std.ArrayList(String).init(allocator);
 
@@ -35,13 +36,20 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
         }
     }
 
-    const frst = try computeGCContent(all_strings.items[2].string);
-    std.debug.print("{d}\n", .{frst});
+    var result: *const String = undefined;
+    var highest_percentage: f64 = 0.0;
 
-    return child_allocator.dupe(u8, "not implemented");
+    for (all_strings.items) |item| {
+        const percentage = try computeGCContent(item.string);
+        if (percentage > highest_percentage) {
+            highest_percentage = percentage;
+            result = &item;
+        }
+    }
+    return try std.fmt.allocPrint(child_allocator, "{s}\n{d}", .{ result.label, highest_percentage });
 }
 
-fn computeGCContent(input: []const u8) !f32 {
+fn computeGCContent(input: []const u8) !f64 {
     var count: u32 = 0;
 
     for (input) |char| {
@@ -51,5 +59,5 @@ fn computeGCContent(input: []const u8) !f32 {
         }
     }
 
-    return @as(f32, @floatFromInt(count)) / @as(f32, @floatFromInt(input.len)) * 100;
+    return @as(f64, @floatFromInt(count)) / @as(f64, @floatFromInt(input.len)) * 100;
 }

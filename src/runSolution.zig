@@ -20,6 +20,7 @@ pub fn runSolution(child_allocator: std.mem.Allocator, number: usize, input_type
     const problems_total = @typeInfo(problems).Struct.decls.len;
     var problem_functions = [_]*const fn (allocator: std.mem.Allocator, input: []const u8) anyerror![]const u8{undefined} ** problems_total;
 
+    // NOTE: is the order here guaranteed?
     inline for (@typeInfo(problems).Struct.decls, 0..) |decl, index| {
         problem_functions[index] = @field(problems, decl.name).solution;
     }
