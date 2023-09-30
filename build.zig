@@ -75,8 +75,10 @@ pub fn build(b: *std.Build) !void {
 
     const string = b.addModule("string", .{ .source_file = .{ .path = "src/utils/string.zig" } });
     const mem = b.addModule("mem", .{ .source_file = .{ .path = "src/utils/mem.zig" } });
+    const Codon = b.addModule("Codon", .{ .source_file = .{ .path = "src/data/Codon.zig" } });
     exe.addModule("string", string);
     exe.addModule("mem", mem);
+    exe.addModule("Codon", Codon);
 
     b.installArtifact(exe);
 
