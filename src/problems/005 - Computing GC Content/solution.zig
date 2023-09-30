@@ -36,17 +36,20 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
         }
     }
 
-    var result: *const String = undefined;
+    var result_label: []const u8 = undefined;
     var highest_percentage: f64 = 0.0;
 
     for (all_strings.items) |item| {
         const percentage = try computeGCContent(item.string);
         if (percentage > highest_percentage) {
             highest_percentage = percentage;
-            result = &item;
+            result_label = item.label;
         }
     }
-    return try std.fmt.allocPrint(child_allocator, "{s}\n{d}", .{ result.label, highest_percentage });
+
+    const final_label = result_label[1..];
+
+    return try std.fmt.allocPrint(child_allocator, "{s}\n{d}", .{ final_label, highest_percentage });
 }
 
 fn computeGCContent(input: []const u8) !f64 {
@@ -59,5 +62,5 @@ fn computeGCContent(input: []const u8) !f64 {
         }
     }
 
-    return @as(f64, @floatFromInt(count)) / @as(f64, @floatFromInt(input.len)) * 100;
+    return @as(f64, @floatFromInt(count)) / @as(f64, @floatFromInt(input.len)) * 100.0;
 }
