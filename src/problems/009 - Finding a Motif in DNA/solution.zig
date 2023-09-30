@@ -16,7 +16,6 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
     var index: usize = 0;
     const max_index = haystack.len - needle.len;
 
-    // NOTE: I think this could be made much less bruteforcish
     while (index <= max_index) : (index += 1) {
         // const needle_index = std.ascii.indexOfIgnoreCasePos(haystack, index, needle);
         // NOTE: oh hey, there's indexOf at home
@@ -25,6 +24,8 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
         if (needle_index) |i| {
             try positions.append(try std.fmt.allocPrint(allocator, "{d}", .{i + 1}));
             index = i;
+        } else {
+            break;
         }
     }
 
