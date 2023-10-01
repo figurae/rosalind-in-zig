@@ -36,8 +36,8 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
             else
                 null;
 
-            if (adjacency != null) {
-                const adjacency_string = try std.fmt.allocPrint(allocator, fmt, adjacency.?);
+            if (adjacency) |a| {
+                const adjacency_string = try std.fmt.allocPrint(allocator, fmt, a);
                 try adjacencies.appendSlice(adjacency_string);
             }
         }

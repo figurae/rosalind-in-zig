@@ -8,7 +8,7 @@ pub fn main() !void {
 
     const allocator = gpa.allocator();
 
-    const result = try runSolution(allocator, 12, .final);
+    const result = try runSolution(allocator, 15, .sample);
     // TODO: can we check whether result is heap- or stack-allocated?
     defer allocator.free(result);
 

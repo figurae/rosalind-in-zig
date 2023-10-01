@@ -74,13 +74,17 @@ pub fn build(b: *std.Build) !void {
     });
 
     const string = b.addModule("string", .{ .source_file = .{ .path = "src/utils/string.zig" } });
+    const math = b.addModule("math", .{ .source_file = .{ .path = "src/utils/math.zig" } });
     const mem = b.addModule("mem", .{ .source_file = .{ .path = "src/utils/mem.zig" } });
-    const data = b.addModule("data", .{ .source_file = .{ .path = "src/genetics/data.zig" }, .dependencies = &.{.{ .name = "string", .module = string }} });
+    const data = b.addModule("data", .{ .source_file = .{ .path = "src/genetics/data.zig" }, .dependencies = &.{ .{ .name = "string", .module = string }, .{ .name = "math", .module = math } } });
     const encoding = b.addModule("encoding", .{ .source_file = .{ .path = "src/genetics/encoding.zig" } });
+    const heredity = b.addModule("heredity", .{ .source_file = .{ .path = "src/genetics/heredity.zig" } });
     exe.addModule("string", string);
+    exe.addModule("math", math);
     exe.addModule("mem", mem);
     exe.addModule("data", data);
     exe.addModule("encoding", encoding);
+    exe.addModule("heredity", heredity);
 
     b.installArtifact(exe);
 

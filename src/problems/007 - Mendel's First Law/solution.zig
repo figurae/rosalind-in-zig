@@ -1,16 +1,10 @@
 const std = @import("std");
 const mem = @import("mem");
-
-const Allele = enum { dominant, recessive };
-
-const OrganismType = enum { homozygous_dominant, heterozygous, homozygous_recessive };
-
-const Organism = struct {
-    alleles: [2]Allele,
-    type: OrganismType,
-};
+const heredity = @import("heredity");
 
 pub fn solution(allocator: std.mem.Allocator, input: []const u8) ![]const u8 {
+    const Organism = heredity.Organism;
+
     // NOTE: these are all the same factors, but it doesn't matter here
     const homozygous_dominant: Organism = .{ .alleles = .{ .dominant, .dominant }, .type = .homozygous_dominant };
     const heterozygous: Organism = .{ .alleles = .{ .dominant, .recessive }, .type = .heterozygous };
@@ -44,7 +38,7 @@ pub fn solution(allocator: std.mem.Allocator, input: []const u8) ![]const u8 {
             for (left_group, 0..) |left_organism, j| {
                 const k = if (same_group_modifier == 1) j + same_group_modifier else 0;
                 for (right_group[k..]) |right_organism| {
-                    sum_of_probabilities += getProbabilityOfDominantAlleleInOffspring(left_organism.alleles, right_organism.alleles);
+                    sum_of_probabilities += heredity.getProbabilityOfDominantAlleleInOffspring(left_organism.alleles, right_organism.alleles);
                 }
             }
         }
@@ -56,19 +50,4 @@ pub fn solution(allocator: std.mem.Allocator, input: []const u8) ![]const u8 {
     const result = sum_of_probabilities / number_of_pairs;
 
     return try std.fmt.allocPrint(allocator, "{d}", .{result});
-}
-
-fn getProbabilityOfDominantAlleleInOffspring(left_alleles: [2]Allele, right_alleles: [2]Allele) f64 {
-    var dominant_allele_count: f64 = 0.0;
-
-    for (left_alleles) |left_allele| {
-        for (right_alleles) |right_allele| {
-            if (left_allele == .dominant or right_allele == .dominant) {
-                dominant_allele_count += 1;
-                continue;
-            }
-        }
-    }
-
-    return dominant_allele_count / 4.0;
 }

@@ -38,7 +38,7 @@ fn getConsensusString(allocator: std.mem.Allocator, profile_matrix: DnaProfileMa
     return consensus_string.toOwnedSlice();
 }
 
-fn getDnaProfileMatrix(allocator: std.mem.Allocator, strings: []data.String) !DnaProfileMatrix {
+fn getDnaProfileMatrix(allocator: std.mem.Allocator, strings: []const data.String) !DnaProfileMatrix {
     std.debug.assert(strings.len > 1);
 
     const length = strings[0].string.len;

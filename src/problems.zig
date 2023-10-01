@@ -10,3 +10,6 @@ pub const problem_009 = @import("problems/009 - Finding a Motif in DNA/solution.
 pub const problem_010 = @import("problems/010 - Consensus and Profile/solution.zig");
 pub const problem_011 = @import("problems/011 - Mortal Fibonacci Rabbits/solution.zig");
 pub const problem_012 = @import("problems/012 - Overlap Graphs/solution.zig");
+pub const problem_013 = @import("problems/013 - Calculating Expected Offspring/solution.zig");
+pub const problem_014 = @import("problems/014 - Finding a Shared Motif/solution.zig");
+pub const problem_015 = @import("problems/015 - Independent Alleles/solution.zig");
