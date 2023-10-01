@@ -1,7 +1,7 @@
 const std = @import("std");
 const string = @import("string");
 
-const String = struct {
+pub const String = struct {
     label: []const u8,
     string: []const u8,
 };
