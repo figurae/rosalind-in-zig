@@ -1,9 +1,5 @@
 const std = @import("std");
-
-const String = struct {
-    label: []const u8,
-    string: []const u8,
-};
+const data = @import("data");
 
 pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const u8 {
     var arena = std.heap.ArenaAllocator.init(child_allocator);
@@ -11,48 +7,23 @@ pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const 
 
     const allocator = arena.allocator();
 
-    const doctored_input = try std.fmt.allocPrint(allocator, "{s}\n>", .{input});
-    // TODO: make this OS-agnostic
-    var tokenizer = std.mem.tokenize(u8, doctored_input, "\r\n");
-
-    var all_strings = std.ArrayList(String).init(allocator);
-
-    var current_label: []const u8 = undefined;
-    var current_string = std.ArrayList(u8).init(allocator);
-
-    while (tokenizer.next()) |token| {
-        if (token[0] == '>') {
-            if (current_string.items.len > 0) {
-                const new_string: String = .{
-                    .label = try allocator.dupe(u8, current_label),
-                    .string = try current_string.toOwnedSlice(),
-                };
-
-                try all_strings.append(new_string);
-            }
-            current_label = token;
-        } else {
-            try current_string.appendSlice(token);
-        }
-    }
+    const strings = try data.getStringsFromFasta(allocator, input);
 
     var result_label: []const u8 = undefined;
     var highest_percentage: f64 = 0.0;
 
-    for (all_strings.items) |item| {
-        const percentage = try computeGCContent(item.string);
+    for (strings) |string| {
+        const percentage = computeGCContent(string.string);
         if (percentage > highest_percentage) {
             highest_percentage = percentage;
-            result_label = item.label;
+            result_label = string.label;
         }
     }
 
-    const final_label = result_label[1..];
-
-    return try std.fmt.allocPrint(child_allocator, "{s}\n{d}", .{ final_label, highest_percentage });
+    return try std.fmt.allocPrint(child_allocator, "{s}\n{d}", .{ result_label, highest_percentage });
 }
 
-fn computeGCContent(input: []const u8) !f64 {
+fn computeGCContent(input: []const u8) f64 {
     var count: u32 = 0;
 
     for (input) |char| {

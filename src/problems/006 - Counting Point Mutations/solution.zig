@@ -1,20 +1,14 @@
 const std = @import("std");
+const string = @import("string");
 
 pub fn solution(child_allocator: std.mem.Allocator, input: []const u8) ![]const u8 {
     var arena = std.heap.ArenaAllocator.init(child_allocator);
     defer arena.deinit();
     const allocator = arena.allocator();
 
-    // TODO: make OS-agnostic
-    var tokenizer = std.mem.tokenize(u8, input, "\r\n");
+    const strings = try string.splitByLines(allocator, input);
 
-    var strings = std.ArrayList([]const u8).init(allocator);
-
-    while (tokenizer.next()) |token| {
-        try strings.append(token);
-    }
-
-    const result = getHammingDistance(strings.items[0], strings.items[1]);
+    const result = getHammingDistance(strings[0], strings[1]);
 
     return try std.fmt.allocPrint(child_allocator, "{d}", .{result});
 }

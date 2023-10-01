@@ -75,10 +75,12 @@ pub fn build(b: *std.Build) !void {
 
     const string = b.addModule("string", .{ .source_file = .{ .path = "src/utils/string.zig" } });
     const mem = b.addModule("mem", .{ .source_file = .{ .path = "src/utils/mem.zig" } });
-    const Codon = b.addModule("Codon", .{ .source_file = .{ .path = "src/data/Codon.zig" } });
+    const data = b.addModule("data", .{ .source_file = .{ .path = "src/genetics/data.zig" }, .dependencies = &.{.{ .name = "string", .module = string }} });
+    const encoding = b.addModule("encoding", .{ .source_file = .{ .path = "src/genetics/encoding.zig" } });
     exe.addModule("string", string);
     exe.addModule("mem", mem);
-    exe.addModule("Codon", Codon);
+    exe.addModule("data", data);
+    exe.addModule("encoding", encoding);
 
     b.installArtifact(exe);
 

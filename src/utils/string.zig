@@ -39,7 +39,7 @@ pub fn splitByLines(allocator: std.mem.Allocator, string: []const u8) ![]const [
     return lines.toOwnedSlice();
 }
 
-fn getLineBreak(string: []const u8) []const u8 {
+pub fn getLineBreak(string: []const u8) []const u8 {
     const lf = std.ascii.indexOfIgnoreCase(string, "\n");
     const cr = std.ascii.indexOfIgnoreCase(string, "\r");
 
