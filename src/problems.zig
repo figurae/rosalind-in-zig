@@ -9,3 +9,4 @@ pub const problem_008 = @import("problems/008 - Translating RNA into Protein/sol
 pub const problem_009 = @import("problems/009 - Finding a Motif in DNA/solution.zig");
 pub const problem_010 = @import("problems/010 - Consensus and Profile/solution.zig");
 pub const problem_011 = @import("problems/011 - Mortal Fibonacci Rabbits/solution.zig");
+pub const problem_012 = @import("problems/012 - Overlap Graphs/solution.zig");

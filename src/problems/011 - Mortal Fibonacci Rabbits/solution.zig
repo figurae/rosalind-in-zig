@@ -30,6 +30,10 @@ fn countRabbitPairs(allocator: std.mem.Allocator, target_gen: usize, maximum_age
             tmp -= 1;
         }
         if (i > maximum_age) {
+            // NOTE: why do we begin counting deaths from generation -1?
+            // the living sequence goes: 1 1 2 2 3 4
+            // the dead sequence goes: 1 1 1 2 2 3 4
+            // where did the leading 1 come from?
             tmp -= rabbit_pairs.items[i - maximum_age - 1];
         }
         try rabbit_pairs.append(tmp);
