@@ -4,7 +4,7 @@ pub fn getFiles(allocator: std.mem.Allocator, dir: *const std.fs.Dir) ![]const [
     var files = std.ArrayList([]const u8).init(allocator);
     defer files.deinit();
 
-    var iterable_dir = try dir.openIterableDir(".", .{});
+    var iterable_dir = try dir.openDir(".", .{});
     defer iterable_dir.close();
 
     var iterator = iterable_dir.iterate();
@@ -26,7 +26,7 @@ pub fn getSubDirectories(allocator: std.mem.Allocator, dir: *const std.fs.Dir) !
     var directories = std.ArrayList([]const u8).init(allocator);
     defer directories.deinit();
 
-    var iterable_dir = try dir.openIterableDir(".", .{});
+    var iterable_dir = try dir.openDir(".", .{});
     defer iterable_dir.close();
 
     var iterator = iterable_dir.iterate();

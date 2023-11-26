@@ -2,7 +2,7 @@ const std = @import("std");
 
 // TODO: try implementing sorting order
 pub fn sortStrings(allocator: std.mem.Allocator, strings: []const []const u8) ![]const []const u8 {
-    var sortedStrings = try allocator.alloc([]const u8, strings.len);
+    const sortedStrings = try allocator.alloc([]const u8, strings.len);
     std.mem.copy([]const u8, sortedStrings, strings);
 
     try quicksort(sortedStrings, 0, sortedStrings.len - 1);

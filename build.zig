@@ -91,7 +91,8 @@ pub fn build(b: *std.Build) !void {
     const run_cmd = b.addRunArtifact(exe);
 
     // NOTE: this doesn't seem like it should be necessary...
-    run_cmd.cwd = "zig-out/bin/";
+    const bin_dir = std.Build.LazyPath.relative("zig-out/bin/");
+    run_cmd.setCwd(bin_dir);
     // NOTE: as far as I understand, this is supposed to change cwd to bin by itself; why does it not?
     run_cmd.step.dependOn(b.getInstallStep());
 

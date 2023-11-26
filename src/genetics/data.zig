@@ -41,7 +41,7 @@ pub fn getStringsFromFasta(allocator: std.mem.Allocator, input: []const u8) ![]c
 }
 
 pub fn getPureStrings(allocator: std.mem.Allocator, strings: []const String) ![]const []const u8 {
-    var pure_strings = try allocator.alloc([]const u8, strings.len);
+    const pure_strings = try allocator.alloc([]const u8, strings.len);
 
     for (pure_strings, 0..) |*s, i| {
         s.* = strings[i].string;

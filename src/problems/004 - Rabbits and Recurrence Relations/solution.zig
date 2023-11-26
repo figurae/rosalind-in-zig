@@ -25,7 +25,7 @@ pub fn solution(allocator: std.mem.Allocator, input: []const u8) ![]const u8 {
     var rabbits = std.ArrayList(Rabbit).init(allocator);
     defer rabbits.deinit();
 
-    var first_rabbit: Rabbit = .{ .age = .young };
+    const first_rabbit: Rabbit = .{ .age = .young };
     try rabbits.append(first_rabbit);
 
     try countRabbitPairs(allocator, 1, target_generation, litter_size, &rabbits);
@@ -42,7 +42,7 @@ fn countRabbitPairs(allocator: std.mem.Allocator, current_gen: usize, target_gen
         for (rabbits.*.items) |*rabbit| {
             if (rabbit.age == .adult) {
                 for (0..litter_size) |_| {
-                    var new_rabbit = .{ .age = .young };
+                    const new_rabbit = .{ .age = .young };
                     try new_rabbits.append(new_rabbit);
                 }
             } else {
