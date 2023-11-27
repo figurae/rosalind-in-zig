@@ -3,6 +3,8 @@ const globals = @import("globals.zig");
 const runSolution = @import("runSolution.zig").runSolution;
 
 pub fn main() !void {
+    std.debug.print("\n", .{});
+
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer std.debug.assert(gpa.deinit() == .ok);
 

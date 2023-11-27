@@ -1,3 +1,4 @@
+// TODO: a single organism can have multiple factors
 const Allele = enum { dominant, recessive };
 
 pub const OrganismType = enum { homozygous_dominant, heterozygous, homozygous_recessive };
